@@ -6,15 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 public class PockerCards {
-	private Map<String,String> cards;
+	//一套扑克牌
+	private List<Map<String,Object>> cards;
 	
 	
-	public Map<String,String> getCards() {
+	public List<Map<String,Object>> getCards() {
 		return cards;
 	}
 
 
-	public void setCards(Map<String,String> cards) {
+	public void setCards(List<Map<String,Object>> cards) {
 		this.cards = cards;
 	}
 	
@@ -23,7 +24,7 @@ public class PockerCards {
 	 */
 	public PockerCards(){
 		System.out.println("初始化扑克牌......");
-		cards = new HashMap<String,String>();
+		cards = new ArrayList<Map<String,Object>>();
 		for(int i=0;i<4;i++){
 			for(int j=0;j<13;j++){
 				String type="";
@@ -36,25 +37,32 @@ public class PockerCards {
 				}else if(i==3){
 					type = "♦方片";
 				}
-				String num = "";
+				String numString = "";
 				if(j==0){
-				    num="A";	
+				    numString="A";	
 				}else if(j<10){
-					num=j+1+"";
+					numString=j+1+"";
 				}else if(j==10){
-					num="J";
+					numString="J";
 				}else if(j==11){
-					num="Q";
+					numString="Q";
 				}else if(j==12){
-					num="K";
+					numString="K";
 				}
-				Map<String,String> card = new HashMap<String,String>();
-				cards.put(type, num);
+				Map<String,Object> card = new HashMap<String,Object>();
+				card.put(type, numString);
+				card.put("num", j+1);
+				cards.add(card);
 			}
 		}
-		cards.put("小王", "小王");
-		cards.put("大王", "大王");
-		
+		Map bigGhost = new HashMap<String,Object>();
+		Map smallGhost = new HashMap<String,Object>();
+		bigGhost.put("大王","大王");
+		bigGhost.put("num",15);
+		smallGhost.put("小王","小王");
+		smallGhost.put("num",14);
+		cards.add(bigGhost);
+		cards.add(smallGhost);
 		System.out.println("扑克牌初始化完毕！");
 	}
 }

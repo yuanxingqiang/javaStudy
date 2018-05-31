@@ -7,64 +7,63 @@ import java.util.Random;
 public class Judge {
 	
 	/**
-	 * ²ÃÅĞ·¢ÅÆ³ÌĞò
-	 * @param pc ³õÊ¼»¯ºÃµÄÆË¿ËÅÆ
-	 * @param p1  Íæ¼Ò£¨ÈËÀà£©
-	 * @param p2  Íæ¼Ò£¨µçÄÔ£©
-	 * @return String ·µ»Ø×Ö·û´®·¢ÅÆÍê±Ï
+	 * è£åˆ¤å‘ç‰Œç¨‹åº
+	 * @param pc åˆå§‹åŒ–å¥½çš„æ‰‘å…‹ç‰Œ
+	 * @param p1  ç©å®¶ï¼ˆäººç±»ï¼‰
+	 * @param p2  ç©å®¶ï¼ˆç”µè„‘ï¼‰
+	 * @return String è¿”å›å­—ç¬¦ä¸²å‘ç‰Œå®Œæ¯•
 	 */
 	public String deal(PockerCards pc,Player p1,Player p2){
-		Map<String,String> cards = pc.getCards();
+		List<Map<String,Object>> cards = pc.getCards();
 		for(int i=0;i<4;i++){
 			Random random = new Random();
 			int cardNumber = random.nextInt(cards.size()-1);
 			if(i%2==0){
-				p1.getHandCards()(cards.get(cardNumber));
+				p1.getHandCards().add(cards.get(cardNumber));
 				cards.remove(cardNumber);
 			}else{
 				p2.getHandCards().add(cards.get(cardNumber));
 				cards.remove(cardNumber);
 			}
 		}
-		return "·¢ÅÆÍê±Ï£¡";
-	}
-	
-	public String compare(Player p1,Player p2){
-		String p1sCard1 = p1.getHandCards().get(0).substring(p1.getHandCards().get(0).length()-1, p1.getHandCards().get(0).length());
-		String p1sCard2 = p1.getHandCards().get(1).substring(p1.getHandCards().get(1).length()-1, p1.getHandCards().get(0).length());
-		String p2sCard1 = p2.getHandCards().get(0).substring(p2.getHandCards().get(0).length()-1, p2.getHandCards().get(0).length());
-		String p2sCard2 = p2.getHandCards().get(1).substring(p2.getHandCards().get(1).length()-1, p2.getHandCards().get(0).length());
-		
-		int p1sMaxCard = string2int(p1sCard1)>string2int(p1sCard2)?string2int(p1sCard1):string2int(p1sCard2);
-		int p2sMaxCard = string2int(p1sCard1)>string2int(p1sCard2)?string2int(p1sCard1):string2int(p1sCard2);
-		
-		return "A";
+		return "å‘ç‰Œå®Œæ¯•ï¼";
 	}
 	
 	/**
-	 * ½«ÆË¿ËÅÆµãÊıÓÉ×ÖÄ¸×ª»»³ÉÊı×Ö
-	 * @param card ÆË¿ËÅÆµÄ×ÖÄ¸
-	 * @return ÆË¿ËÅÆµãÊı¶ÔÓ¦µÄÊı×Ö
+	 * æ¯”è°çš„ç‚¹æ•°å¤§
+	 * @param p1 ç©å®¶
+	 * @param p2 ç”µè„‘
+	 * @return æ¯”ç‰Œå¤§å°çš„ç»“æœ
 	 */
-	private int string2int(String card){
-		int cardsInt=0;
-		if(card.equals("A")){
-			cardsInt=1;
-		}else if(card.equals("J")){
-			cardsInt=11;
-		}else if(card.equals("Q")){
-			cardsInt=12;
-		}else if(card.equals("K")){
-			cardsInt=13;
-		}else if(card.equals("Ğ¡Íõ")){
-			cardsInt=14;
-		}else if(card.equals("´óÍõ")){
-			cardsInt=15;
-		}else{
-			cardsInt=Integer.parseInt(card);
+	public String compare(Player p1,Player p2){
+		String result = "";
+		if((int)p1.getBiggerCard().get("num")>(int)p2.getBiggerCard().get("num")){
+			result = p1.getName()+"èµ¢";
+		}else if((int)p1.getBiggerCard().get("num")<(int)p2.getBiggerCard().get("num")){
+			result = p2.getName()+"èµ¢";
+		}else if((int)p1.getBiggerCard().get("num")==(int)p2.getBiggerCard().get("num")){
+			if(p1.getBiggerCard().get("type").equals("â™ é»‘æ¡ƒ")){
+				result =  p1.getName()+"èµ¢";
+			}else if(p1.getBiggerCard().get("type").equals("â™¥çº¢å¿ƒ") && (p2.getBiggerCard().get("type").equals("â™£æ¢…èŠ±") || p2.getBiggerCard().get("type").equals("â™¦æ–¹ç‰‡"))){
+				result =  p1.getName()+"èµ¢";
+			}else if(p1.getBiggerCard().get("type").equals("â™£æ¢…èŠ±") && p2.getBiggerCard().get("type").equals("â™¦æ–¹ç‰‡")){
+				result =  p1.getName()+"èµ¢";
+			}else{
+				result =  p2.getName()+"èµ¢";
+			}
 		}
-		
-		return cardsInt;
+		return result;
 	}
+	
+	/**
+	 * å±•ç¤ºä¸¤ä½ç©å®¶çš„æ‰‹ç‰Œ
+	 * @param p1 ç©å®¶
+	 * @param p2 ç”µè„‘
+	 */
+	public void showCards(Player p1,Player p2){
+		System.out.println(p1.getName()+"çš„æ‰‹ç‰Œï¼š"+p1.getHandCards().get(0).get("type")+p1.getHandCards().get(0).get("num")+"ã€"+p1.getHandCards().get(1).get("type")+p1.getHandCards().get(1).get("num"));
+		System.out.println(p2.getName()+"çš„æ‰‹ç‰Œï¼š"+p2.getHandCards().get(0).get("type")+p2.getHandCards().get(0).get("num")+"ã€"+p2.getHandCards().get(1).get("type")+p2.getHandCards().get(1).get("num"));
+	}
+
 	
 }
