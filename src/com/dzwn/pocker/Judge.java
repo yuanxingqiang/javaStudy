@@ -61,8 +61,8 @@ public class Judge {
 	 * @param p2 电脑
 	 */
 	public void showCards(Player p1,Player p2){
-		System.out.println(p1.getName()+"的手牌："+p1.getHandCards().get(0).get("type")+p1.getHandCards().get(0).get("num")+"、"+p1.getHandCards().get(1).get("type")+p1.getHandCards().get(1).get("num"));
-		System.out.println(p2.getName()+"的手牌："+p2.getHandCards().get(0).get("type")+p2.getHandCards().get(0).get("num")+"、"+p2.getHandCards().get(1).get("type")+p2.getHandCards().get(1).get("num"));
+		System.out.println(p1.getName()+"的手牌："+p1.getHandCards().get(0).get("type")+p1.getHandCards().get(0).get("point")+"、"+p1.getHandCards().get(1).get("type")+p1.getHandCards().get(1).get("point"));
+		System.out.println(p2.getName()+"的手牌："+p2.getHandCards().get(0).get("type")+p2.getHandCards().get(0).get("point")+"、"+p2.getHandCards().get(1).get("type")+p2.getHandCards().get(1).get("point"));
 	}
 
 	

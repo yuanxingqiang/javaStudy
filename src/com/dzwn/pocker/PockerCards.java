@@ -50,16 +50,19 @@ public class PockerCards {
 					numString="K";
 				}
 				Map<String,Object> card = new HashMap<String,Object>();
-				card.put(type, numString);
+				card.put("type", type);
+				card.put("point", numString);
 				card.put("num", j+1);
 				cards.add(card);
 			}
 		}
 		Map bigGhost = new HashMap<String,Object>();
 		Map smallGhost = new HashMap<String,Object>();
-		bigGhost.put("大王","大王");
+		bigGhost.put("type","大王");
+		bigGhost.put("point","大王");
 		bigGhost.put("num",15);
-		smallGhost.put("小王","小王");
+		smallGhost.put("type","小王");
+		smallGhost.put("point","小王");
 		smallGhost.put("num",14);
 		cards.add(bigGhost);
 		cards.add(smallGhost);

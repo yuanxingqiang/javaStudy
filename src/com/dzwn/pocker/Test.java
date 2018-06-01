@@ -18,9 +18,9 @@ public class Test {
 		System.out.println(jd.deal(pc, p1, p2));
 		System.out.println("ÄãµÄÊÖÅÆ£º");
 		for(int i=0;i<p1.getHandCards().size();i++){
-			System.out.print(p1.getHandCards().get(i).get+"	");
+			System.out.print((String)p1.getHandCards().get(i).get("type")+p1.getHandCards().get(i).get("point")+" ");
 		}
-		
+		System.out.println("");
 		System.out.println(jd.compare(p1, p2));
 		jd.showCards(p1, p2);
 		
