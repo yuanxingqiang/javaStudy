@@ -1,6 +1,8 @@
 package com.dzwn.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class IOUtil {
@@ -63,6 +65,11 @@ public class IOUtil {
 			}
 		}
 		
+	}
+	
+	public static void copyFile(File srcFile,File destFile)throws IOException{
+		String filename = "abc";
+		FileOutputStream out = new FileOutputStream(filename);
 	}
 
 }
