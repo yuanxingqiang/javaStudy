@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class IOUtil {
 	
 	/**
-	 * 读取制定文件内容，按照16进制输出到控制台
+	 * 读取指定文件内容，按照16进制输出到控制台
 	 * 并且每输出10byte换行
-	 * @param fileName
+	 * @param fileName 被读取的文件
+	 * @throws IOException IO异常
 	 */
 	public static void printHex(String fileName)throws IOException{
 		//把文件作为字节流进行读操作
@@ -30,6 +33,12 @@ public class IOUtil {
 		in.close();
 	}
 	
+	/**
+	 * 读取指定文件内容，按照16进制输出到控制台(使用byte数组方式读取)
+	 * 并且每输出10byte换行
+	 * @param fileName 被读取的文件
+	 * @throws IOException IO异常
+	 */
 	public static void printHexByByteArray(String fileName)throws IOException{
 		FileInputStream in=new FileInputStream(fileName);
 		byte[] buf=new byte[20*1024];
@@ -67,6 +76,12 @@ public class IOUtil {
 		
 	}
 	
+	/**
+	 * 将文件复制一份（字节流，可以复制任何文件）
+	 * @param srcFile 复制的源文件
+	 * @param destFile 复制的目标文件
+	 * @throws IOException IO异常
+	 */
 	public static void copyFile(File srcFile,File destFile)throws IOException{
 		if(!srcFile.exists()){
 			throw new IllegalArgumentException("文件："+srcFile+"不存在");
@@ -85,6 +100,35 @@ public class IOUtil {
 		in.close();
 		out.close();
 		
+	}
+	
+	/**
+	 * 将文本文件复制一份（字符流，只能复制文本文件）
+	 * @param srcFile 复制的源文件
+	 * @param destFile 复制的目标文件
+	 * @throws IOException IO异常
+	 */
+	public static void copyTextFile(File srcFile,File destFile)throws IOException{
+		if(!srcFile.exists()){
+			throw new IllegalArgumentException("文件："+srcFile+"不存在");
+		}
+		if(!srcFile.isFile()){
+			throw new IllegalArgumentException(srcFile+"不是文件");
+		}
+		FileInputStream in = new FileInputStream(srcFile);
+		FileOutputStream out = new FileOutputStream(destFile,true);
+		InputStreamReader isr = new InputStreamReader(in,"utf-8");
+		OutputStreamWriter osw = new OutputStreamWriter(out,"utf-8");
+		char[] c = new char[8*1024];
+		int i;
+		while((i=isr.read(c))!=-1){
+			osw.write(c,0,i);
+			osw.flush();
+		}
+		osw.close();
+		isr.close();
+		out.close();
+		in.close();
 	}
 
 }
