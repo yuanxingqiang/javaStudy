@@ -3,6 +3,8 @@ package com.dzwn.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -90,7 +92,7 @@ public class IOUtil {
 			throw new IllegalArgumentException(srcFile+"不是文件");
 		}
 		FileInputStream in = new FileInputStream(srcFile);
-		FileOutputStream out = new FileOutputStream(destFile,true);
+		FileOutputStream out = new FileOutputStream(destFile,true);//加true是追加写
 		byte[] buf = new byte[8*1024];
 		int b;
 		while((b = in.read(buf,0,buf.length))!=-1){
@@ -103,7 +105,7 @@ public class IOUtil {
 	}
 	
 	/**
-	 * 将文本文件复制一份（字符流，只能复制文本文件）
+	 * 将文本文件复制一份（字符转换流，只能复制文本文件）
 	 * @param srcFile 复制的源文件
 	 * @param destFile 复制的目标文件
 	 * @throws IOException IO异常
@@ -116,19 +118,44 @@ public class IOUtil {
 			throw new IllegalArgumentException(srcFile+"不是文件");
 		}
 		FileInputStream in = new FileInputStream(srcFile);
-		FileOutputStream out = new FileOutputStream(destFile,true);
+		FileOutputStream out = new FileOutputStream(destFile,true);//加true是追加写
 		InputStreamReader isr = new InputStreamReader(in,"utf-8");
 		OutputStreamWriter osw = new OutputStreamWriter(out,"utf-8");
-		char[] c = new char[8*1024];
+		char[] buf = new char[8*1024];
 		int i;
-		while((i=isr.read(c))!=-1){
-			osw.write(c,0,i);
+		while((i=isr.read(buf))!=-1){
+			osw.write(buf,0,i);
 			osw.flush();
 		}
 		osw.close();
 		isr.close();
 		out.close();
 		in.close();
+	}
+	
+	/**
+	 * 将文本文件复制一份（字符流，只能复制文本文件）
+	 * @param srcFile 源文件路径及文件名
+	 * @param destFile 目标文件路径及文件名
+	 * @throws IOException IO异常
+	 */
+	public static void copyTextFile(String srcFile,String destFile)throws IOException{
+		if(!new File(srcFile).exists()){
+			throw new IllegalArgumentException("文件："+srcFile+"不存在");
+		}
+		if(!new File(srcFile).isFile()){
+			throw new IllegalArgumentException(srcFile+"不是文件");
+		}
+		FileReader fr = new FileReader(srcFile);
+		FileWriter fw = new FileWriter(destFile,true);//加true是追加写
+		char[] buf = new char[8*1024];
+		int i;
+		while((i=fr.read(buf))!=-1){
+			fw.write(buf,0,i);
+			fw.flush();
+		}
+		fw.close();
+		fr.close();
 	}
 
 }
