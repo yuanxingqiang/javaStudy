@@ -1,5 +1,8 @@
 package com.dzwn.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -8,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 public class IOUtil {
 	
@@ -134,6 +138,31 @@ public class IOUtil {
 	}
 	
 	/**
+	 * 利用带缓冲的字节流进行文件拷贝
+	 * @param srcFile
+	 * @param destFile
+	 * @throws IOException
+	 */
+	public static void copyFileByBuffer(File srcFile, File destFile)throws IOException{
+		if(!srcFile.exists()){
+			throw new IllegalArgumentException("文件："+srcFile+"不存在");
+		}
+		if(!srcFile.isFile()){
+			throw new IllegalArgumentException(srcFile+"不是文件");
+		}
+		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(srcFile));
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destFile));
+		int c;
+		while((c = bis.read())!=-1){
+			bos.write(c);
+			bos.flush();//刷新缓冲区，必须写这一步，否则无法将字节放入缓冲区
+		}
+		bos.close();
+		bis.close();
+	}
+	
+	
+	/**
 	 * 将文本文件复制一份（字符流，只能复制文本文件）
 	 * @param srcFile 源文件路径及文件名
 	 * @param destFile 目标文件路径及文件名
@@ -156,6 +185,47 @@ public class IOUtil {
 		}
 		fw.close();
 		fr.close();
+	}
+	
+	/**
+	 * 使用字符流的过滤器复制文件
+	 * @param srcFile
+	 * @param destFile
+	 * @throws IOException
+	 */
+	public static void brAndbwOrPw(String srcFile,String destFile)throws IOException{
+		if(!new File(srcFile).exists()){
+			throw new IllegalArgumentException("文件："+srcFile+"不存在");
+		}
+		if(!new File(srcFile).isFile()){
+			throw new IllegalArgumentException(srcFile+"不是文件");
+		}
+		FileInputStream fis = new FileInputStream(srcFile);
+		InputStreamReader isr = new InputStreamReader(fis);
+		BufferedReader br = new BufferedReader(isr);
+		
+		//以下两种构造分别为BufferedWriter的和PrintWritter的构造过程
+//		FileOutputStream fos = new FileOutputStream(destFile);
+//		OutputStreamWriter osw = new OutputStreamWriter(fos);
+//		BufferedWriter bw = new BufferedWriter(osw);
+		
+		PrintWriter pw = new PrintWriter(destFile);
+		
+		
+		String line;
+		while((line = br.readLine()/*一次读一行*/)!=null){
+			
+			//以下分别为BufferedWriter的和PrintWritter的写流的过程
+//			bw.write(line);
+//			bw.newLine();//换行操作
+//			bw.flush();
+			
+			pw.println(line);//自动换行
+		}
+		//与之对应的关闭资源
+//		bw.close();
+		pw.close();
+		br.close();
 	}
 
 }
